@@ -25,9 +25,30 @@ and this project adheres to `Semantic Versioning <https://semver.org/>`_.
 Planned
 ======================================================================
 
-- GitHub Actions workflow for automated marketplace publishing
 - Support for Sphinx-specific directives
 - Synchronized scrolling between editor and preview
+
+.. _changelog-1.0.1:
+
+**********************************************************************
+[1.0.1] - 2026-01-19
+**********************************************************************
+
+.. _changelog-1.0.1-added:
+
+Added
+======================================================================
+
+- **Automated JetBrains Marketplace publishing** via GitHub Actions
+- **Plugin verification** configuration in build system
+
+.. _changelog-1.0.1-changed:
+
+Changed
+======================================================================
+
+- Updated ``build.gradle.kts`` with ``pluginVerification.ides`` configuration
+- Enabled ``publishPlugin`` step in ``release.yml`` workflow
 
 .. _changelog-1.0.0:
 

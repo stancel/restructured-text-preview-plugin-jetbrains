@@ -1,10 +1,12 @@
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+
 plugins {
     id("java")
     id("org.jetbrains.intellij.platform") version "2.2.1"
 }
 
 group = "com.github.stancel"
-version = "1.0.0"
+version = "1.0.1"
 
 repositories {
     mavenCentral()
@@ -64,6 +66,14 @@ intellijPlatform {
     // Publishing configuration for JetBrains Marketplace
     publishing {
         token = providers.environmentVariable("PUBLISH_TOKEN")
+    }
+
+    // Plugin verification configuration
+    pluginVerification {
+        ides {
+            // Verify against current and previous major versions
+            ide(IntelliJPlatformType.IntellijIdeaCommunity, "2024.3")
+        }
     }
 }
 

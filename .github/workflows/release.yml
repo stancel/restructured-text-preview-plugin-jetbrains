@@ -58,10 +58,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Uncomment below to enable automatic JetBrains Marketplace publishing
-      # Requires PUBLISH_TOKEN secret to be set in repository settings
-      #
-      # - name: Publish to JetBrains Marketplace
-      #   run: ./gradlew publishPlugin
-      #   env:
-      #     PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+      - name: Publish to JetBrains Marketplace
+        run: ./gradlew publishPlugin
+        env:
+          PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
