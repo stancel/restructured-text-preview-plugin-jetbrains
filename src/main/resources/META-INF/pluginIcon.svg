@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <!-- Background rounded rectangle -->
+  <rect x="2" y="2" width="36" height="36" rx="6" ry="6" fill="#4A90A4"/>
+
+  <!-- Document shape (left side - source) -->
+  <rect x="6" y="7" width="12" height="16" rx="1" fill="#ffffff" opacity="0.9"/>
+  <!-- RST text lines -->
+  <rect x="8" y="10" width="8" height="1.5" rx="0.5" fill="#4A90A4"/>
+  <rect x="8" y="13" width="6" height="1.5" rx="0.5" fill="#4A90A4" opacity="0.6"/>
+  <rect x="8" y="16" width="7" height="1.5" rx="0.5" fill="#4A90A4" opacity="0.6"/>
+  <rect x="8" y="19" width="5" height="1.5" rx="0.5" fill="#4A90A4" opacity="0.6"/>
+
+  <!-- Arrow indicating transformation -->
+  <path d="M20 15 L23 15 L23 13 L27 16 L23 19 L23 17 L20 17 Z" fill="#ffffff" opacity="0.8"/>
+
+  <!-- Preview/rendered document (right side) -->
+  <rect x="22" y="17" width="12" height="16" rx="1" fill="#ffffff"/>
+  <!-- Rendered content representation -->
+  <rect x="24" y="20" width="8" height="2" rx="0.5" fill="#2E5266"/>
+  <rect x="24" y="24" width="8" height="1" rx="0.5" fill="#6B8E9B"/>
+  <rect x="24" y="26" width="8" height="1" rx="0.5" fill="#6B8E9B"/>
+  <rect x="24" y="28" width="6" height="1" rx="0.5" fill="#6B8E9B"/>
+  <rect x="24" y="30" width="7" height="1" rx="0.5" fill="#6B8E9B"/>
+</svg>

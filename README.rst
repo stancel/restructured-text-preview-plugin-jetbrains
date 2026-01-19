@@ -226,8 +226,6 @@ Contributions are welcome! Please:
 4. Run ``./gradlew build`` to verify
 5. Submit a pull request
 
-See ``CLAUDE.md`` for development guidelines and coding standards.
-
 .. _rst-preview-license:
 
 **********************************************************************

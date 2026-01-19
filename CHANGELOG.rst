@@ -28,6 +28,20 @@ Planned
 - Support for Sphinx-specific directives
 - Synchronized scrolling between editor and preview
 
+.. _changelog-1.0.2:
+
+**********************************************************************
+[1.0.2] - 2026-01-19
+**********************************************************************
+
+.. _changelog-1.0.2-added:
+
+Added
+======================================================================
+
+- **Plugin icon** for JetBrains Marketplace and IDE plugin list
+- Light and dark theme icon variants (``pluginIcon.svg``, ``pluginIcon_dark.svg``)
+
 .. _changelog-1.0.1:
 
 **********************************************************************
