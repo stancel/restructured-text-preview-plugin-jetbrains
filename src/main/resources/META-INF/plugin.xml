@@ -1,0 +1,37 @@
+<idea-plugin>
+    <id>com.github.stancel.rst-preview-standalone</id>
+    <name>ReStructuredText Preview (Standalone)</name>
+    <vendor>Brad Stancel</vendor>
+
+    <description><![CDATA[
+    Adds standalone HTML preview for ReStructuredText files without requiring the Python plugin.
+    <br/><br/>
+    <b>Features:</b>
+    <ul>
+      <li>Live HTML preview inside the IDE (split-pane view)</li>
+      <li>Uses your system's rst2html command from docutils</li>
+      <li>Works without the Python plugin</li>
+      <li>Supports both light and dark themes</li>
+      <li>Configurable rst2html path in settings</li>
+    </ul>
+    <br/>
+    <b>Requirements:</b>
+    <ul>
+      <li>docutils installed: <code>pip install docutils</code></li>
+      <li>rst2html in your PATH or configured in settings</li>
+    </ul>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.plugins.rest</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileEditorProvider implementation="com.github.stancel.rstpreview.editor.RstPreviewEditorProvider"
+                            order="first"/>
+        <applicationService serviceImplementation="com.github.stancel.rstpreview.editor.RstPreviewSettings"/>
+        <applicationConfigurable groupId="language"
+                                 instance="com.github.stancel.rstpreview.editor.RstPreviewConfigurable"
+                                 id="rstpreview.settings"
+                                 displayName="ReStructuredText Preview"/>
+    </extensions>
+</idea-plugin>
