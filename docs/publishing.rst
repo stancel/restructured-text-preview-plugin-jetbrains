@@ -175,7 +175,7 @@ To trigger an automated release:
 
    # Create and push tag
    git tag v1.0.1
-   git push origin main --tags
+   git push origin master --tags
 
 This will:
 
@@ -183,6 +183,9 @@ This will:
 2. Build the plugin
 3. Create a GitHub Release with the ZIP
 4. Publish to JetBrains Marketplace (if enabled)
+
+**Note**: The first plugin upload to the Marketplace must be done manually via
+the web interface. Automated publishing only works for subsequent updates.
 
 .. _publishing-version:
 
@@ -276,6 +279,35 @@ If ``./gradlew verifyPlugin`` fails:
 - Ensure all required fields are present
 - Verify sinceBuild/untilBuild range
 - Check for deprecated API usage
+
+.. _publishing-trouble-structure:
+
+Plugin Structure Errors
+======================================================================
+
+If you get "Unexpected plugin archive file structure" error:
+
+**Wrong file downloaded**: GitHub has two types of ZIP files:
+
+- ✅ **Built plugin**: ``releases/download/vX.X.X/rst-preview-plugin-X.X.X.zip``
+- ❌ **Source code**: ``archive/refs/tags/vX.X.X.zip``
+
+Always use the built plugin ZIP from GitHub Releases, not the source archive.
+
+**Verify structure** with:
+
+.. code-block:: bash
+
+   unzip -l build/distributions/rst-preview-plugin-X.X.X.zip
+
+Expected:
+
+::
+
+   rst-preview-plugin/
+   └── lib/
+       ├── rst-preview-plugin-X.X.X.jar
+       └── rst-preview-plugin-X.X.X-searchableOptions.jar
 
 .. _publishing-trouble-publish:
 

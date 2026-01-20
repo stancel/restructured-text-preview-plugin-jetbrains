@@ -202,6 +202,9 @@ Build Commands
    # Build the plugin
    ./gradlew build
 
+   # Verify plugin for API compatibility (required before releases)
+   ./gradlew verifyPlugin
+
    # Create distributable ZIP
    ./gradlew buildPlugin
    # Output: build/distributions/rst-preview-plugin-X.X.X.zip
@@ -211,6 +214,9 @@ Build Commands
 
    # Clean build artifacts
    ./gradlew clean
+
+   # Full pre-release workflow
+   ./gradlew clean build verifyPlugin
 
 .. _rst-preview-contributing:
 
@@ -252,7 +258,7 @@ Acknowledgments
 Links
 **********************************************************************
 
-- `GitHub Repository <https://github.com/stancel/rst-preview-jetbrains>`_
+- `GitHub Repository <https://github.com/stancel/restructured-text-preview-plugin-jetbrains>`_
 - `JetBrains Marketplace <https://plugins.jetbrains.com/>`_
 - `docutils Documentation <https://docutils.sourceforge.io/>`_
-- `Issue Tracker <https://github.com/stancel/rst-preview-jetbrains/issues>`_
+- `Issue Tracker <https://github.com/stancel/restructured-text-preview-plugin-jetbrains/issues>`_

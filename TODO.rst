@@ -17,25 +17,7 @@ ReStructuredText Preview Plugin.
 High Priority
 **********************************************************************
 
-.. _todo-marketplace-publishing:
-
-JetBrains Marketplace Publishing
-======================================================================
-
-- [ ] Create JetBrains Marketplace vendor account
-- [ ] Configure plugin signing
-- [ ] Submit initial plugin version for review
-- [ ] Set up automated publishing via GitHub Actions
-
-.. _todo-github-actions:
-
-GitHub Actions CI/CD
-======================================================================
-
-- [ ] Create build workflow for PRs
-- [ ] Create release workflow for tags
-- [ ] Add ``PUBLISH_TOKEN`` secret for marketplace
-- [ ] Test automated build and publish pipeline
+No high priority items at this time. See Medium Priority for planned features.
 
 .. _todo-medium-priority:
 
@@ -114,6 +96,33 @@ Editor Enhancements
 Completed
 **********************************************************************
 
+.. _todo-completed-1.0.3:
+
+Version 1.0.3
+======================================================================
+
+- [x] Fixed all deprecated API usages
+- [x] Fixed non-extendable API violation
+- [x] Updated Gradle wrapper to 8.13
+- [x] Updated IntelliJ Platform Gradle Plugin to 2.10.5
+
+.. _todo-completed-1.0.2:
+
+Version 1.0.2
+======================================================================
+
+- [x] Added plugin icon (light and dark variants)
+
+.. _todo-completed-1.0.1:
+
+Version 1.0.1
+======================================================================
+
+- [x] JetBrains Marketplace publishing setup
+- [x] GitHub Actions CI/CD workflows
+- [x] Plugin verification configuration
+- [x] Automated release workflow
+
 .. _todo-completed-1.0.0:
 
 Version 1.0.0
@@ -166,17 +175,6 @@ JCEF Availability
 **Status**: Plugin automatically falls back to Swing renderer.
 
 **Impact**: Reduced CSS support with Swing renderer.
-
-.. _todo-issues-deprecated:
-
-Deprecated API Usage
-======================================================================
-
-**Issue**: Using deprecated ``UIUtil.isUnderDarcula()`` method.
-
-**Status**: Works but may be removed in future IDE versions.
-
-**Plan**: Update to use ``JBColor.isBright()`` or theme detection APIs.
 
 .. _todo-ideas:
 
