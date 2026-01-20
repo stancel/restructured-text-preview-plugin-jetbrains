@@ -28,6 +28,32 @@ Planned
 - Support for Sphinx-specific directives
 - Synchronized scrolling between editor and preview
 
+.. _changelog-1.0.3:
+
+**********************************************************************
+[1.0.3] - 2026-01-19
+**********************************************************************
+
+.. _changelog-1.0.3-fixed:
+
+Fixed
+======================================================================
+
+- Replaced deprecated ``TextFieldWithBrowseButton.addBrowseFolderListener()`` API
+- Replaced deprecated ``FileChooserDescriptorFactory.createSingleFileDescriptor()`` API
+- Replaced deprecated ``UIUtil.isUnderDarcula()`` with ``JBColor.isBright()``
+- Replaced deprecated ``URL(String)`` constructor with ``URI`` API
+- Replaced deprecated ``Disposer.isDisposed()`` with manual disposal tracking
+- Fixed non-extendable API violation (removed ``CheckedDisposable`` implementation)
+
+.. _changelog-1.0.3-changed:
+
+Changed
+======================================================================
+
+- Updated development workflow in CLAUDE.md to require ``verifyPlugin`` before commits
+- Added ``@SuppressWarnings("UnstableApiUsage")`` for intentional experimental API usage
+
 .. _changelog-1.0.2:
 
 **********************************************************************

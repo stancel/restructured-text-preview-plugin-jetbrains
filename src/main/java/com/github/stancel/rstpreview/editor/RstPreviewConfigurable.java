@@ -1,7 +1,7 @@
 // Copyright 2024 Brad Stancel. Licensed under Apache 2.0.
 package com.github.stancel.rstpreview.editor;
 
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
+import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.NlsContexts;
@@ -27,12 +27,10 @@ public class RstPreviewConfigurable implements Configurable {
     @Override
     public @Nullable JComponent createComponent() {
         myRst2HtmlPathField = new TextFieldWithBrowseButton();
-        myRst2HtmlPathField.addBrowseFolderListener(
-                "Select rst2html Executable",
-                "Select the path to rst2html or rst2html.py",
-                null,
-                FileChooserDescriptorFactory.createSingleFileDescriptor()
-        );
+        FileChooserDescriptor descriptor = new FileChooserDescriptor(true, false, false, false, false, false)
+                .withTitle("Select rst2html Executable")
+                .withDescription("Select the path to rst2html or rst2html.py");
+        myRst2HtmlPathField.addBrowseFolderListener(null, descriptor);
 
         myJcefRadioButton = new JBRadioButton("JCEF (Chromium-based, recommended)");
         mySwingRadioButton = new JBRadioButton("Swing (basic HTML support)");

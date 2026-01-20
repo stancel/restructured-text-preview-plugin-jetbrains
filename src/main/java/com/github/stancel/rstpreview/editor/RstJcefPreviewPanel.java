@@ -9,7 +9,7 @@ import com.intellij.openapi.util.Disposer;
 import com.intellij.ui.jcef.JBCefBrowserBase;
 import com.intellij.ui.jcef.JBCefJSQuery;
 import com.intellij.ui.jcef.JCEFHtmlPanel;
-import com.intellij.util.ui.UIUtil;
+import com.intellij.ui.JBColor;
 import org.cef.browser.CefBrowser;
 import org.cef.handler.CefLoadHandler;
 import org.cef.handler.CefLoadHandlerAdapter;
@@ -21,10 +21,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import javax.swing.*;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.EnumMap;
@@ -123,12 +121,12 @@ public final class RstJcefPreviewPanel extends JCEFHtmlPanel implements RstPrevi
     }
 
     private static @NotNull String getCssStyleCodeToInject() {
-        boolean isDarcula = UIUtil.isUnderDarcula();
-        Style style = isDarcula ? Style.DARCULA : Style.DEFAULT;
+        boolean isDarkTheme = !JBColor.isBright();
+        Style style = isDarkTheme ? Style.DARCULA : Style.DEFAULT;
         String cssCodeToInject = ourLoadedStylesCache.get(style);
         if (cssCodeToInject != null) return cssCodeToInject;
 
-        cssCodeToInject = "<style>" + getBuiltInCss(isDarcula) + "</style>";
+        cssCodeToInject = "<style>" + getBuiltInCss(isDarkTheme) + "</style>";
         ourLoadedStylesCache.put(style, cssCodeToInject);
         return cssCodeToInject;
     }
@@ -176,15 +174,16 @@ public final class RstJcefPreviewPanel extends JCEFHtmlPanel implements RstPrevi
         Elements elements = document.getElementsByTag("img");
 
         for (Element element : elements) {
+            String src = element.attr("src");
             URI uri = null;
             try {
-                uri = (new URL(element.attr("src"))).toURI();
-                if (!uri.getScheme().equals("file")) continue;
-            } catch (MalformedURLException | URISyntaxException e) {
-                // Assume file scheme
+                uri = new URI(src);
+                if (uri.getScheme() != null && !uri.getScheme().equals("file")) continue;
+            } catch (URISyntaxException e) {
+                // Assume file scheme for malformed URIs
             }
 
-            Path originalPath = Paths.get((uri != null ? uri.getPath() : element.attr("src")));
+            Path originalPath = Paths.get((uri != null && uri.getPath() != null) ? uri.getPath() : src);
             if (originalPath.isAbsolute()) continue;
 
             element.attr("src", Paths.get(basePath, originalPath.toString()).toString());

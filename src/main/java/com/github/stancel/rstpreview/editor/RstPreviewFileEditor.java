@@ -36,6 +36,7 @@ public class RstPreviewFileEditor extends UserDataHolderBase implements FileEdit
     private final Object REQUESTS_LOCK = new Object();
     private @Nullable Runnable myLastRequest = null;
     private @NotNull String myLastRenderedHtml = "";
+    private volatile boolean myDisposed = false;
 
     public RstPreviewFileEditor(@NotNull VirtualFile file, @NotNull Project project) {
         myFile = file;
@@ -97,7 +98,7 @@ public class RstPreviewFileEditor extends UserDataHolderBase implements FileEdit
     }
 
     private void updateHtml() {
-        if (!myFile.isValid() || myDocument == null || Disposer.isDisposed(this)) {
+        if (!myFile.isValid() || myDocument == null || isDisposed()) {
             return;
         }
 
@@ -109,7 +110,7 @@ public class RstPreviewFileEditor extends UserDataHolderBase implements FileEdit
             html = NO_PREVIEW + htmlAndError.getSecond();
         }
 
-        if (!myFile.isValid() || Disposer.isDisposed(this)) {
+        if (!myFile.isValid() || isDisposed()) {
             return;
         }
 
@@ -145,8 +146,13 @@ public class RstPreviewFileEditor extends UserDataHolderBase implements FileEdit
         return myFile;
     }
 
+    private boolean isDisposed() {
+        return myDisposed;
+    }
+
     @Override
     public void dispose() {
+        myDisposed = true;
         Disposer.dispose(myPanel);
     }
 }

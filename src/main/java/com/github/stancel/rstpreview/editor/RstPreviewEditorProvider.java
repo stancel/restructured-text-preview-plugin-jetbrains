@@ -41,8 +41,11 @@ public class RstPreviewEditorProvider implements FileEditorProvider, DumbAware {
         return "rst-preview-standalone-editor";
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public @NotNull FileEditorPolicy getPolicy() {
+        // HIDE_OTHER_EDITORS is marked experimental but is the correct policy
+        // for this use case - we want our split editor to be the only editor shown
         return FileEditorPolicy.HIDE_OTHER_EDITORS;
     }
 }
