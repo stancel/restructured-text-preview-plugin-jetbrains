@@ -53,6 +53,8 @@ Changed
 
 - Updated development workflow in CLAUDE.md to require ``verifyPlugin`` before commits
 - Added ``@SuppressWarnings("UnstableApiUsage")`` for intentional experimental API usage
+- Updated Gradle wrapper from 8.5 to 8.13
+- Updated IntelliJ Platform Gradle Plugin from 2.2.1 to 2.10.5
 
 .. _changelog-1.0.2:
 
