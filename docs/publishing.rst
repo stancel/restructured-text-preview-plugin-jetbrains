@@ -238,7 +238,7 @@ In ``build.gradle.kts``:
        pluginConfiguration {
            ideaVersion {
                sinceBuild = "243"        // Minimum IDE build
-               untilBuild = "253.*"      // Maximum IDE build
+               untilBuild = "261.*"      // Maximum IDE build
            }
        }
    }
