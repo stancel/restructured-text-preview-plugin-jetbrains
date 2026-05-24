@@ -38,9 +38,12 @@ public final class RstJcefPreviewPanel extends JCEFHtmlPanel implements RstPrevi
     private static final EnumMap<Style, String> ourLoadedStylesCache = new EnumMap<>(Style.class);
 
     private final JBCefJSQuery myJSQueryOpenInBrowser = JBCefJSQuery.create((JBCefBrowserBase) this);
+    private final JBCefJSQuery myJSQueryScrollSync = JBCefJSQuery.create((JBCefBrowserBase) this);
     private final CefLoadHandler myCefLoadHandler;
     private final @NotNull Project myProject;
     private @Nullable String myLastHtml;
+    private @Nullable ScrollListener myScrollListener;
+    private volatile boolean myExternalScrolling = false;
 
     private static final @NotNull String JS_CODE =
             "window.__IntelliJTools = {};\n" +
@@ -71,6 +74,22 @@ public final class RstJcefPreviewPanel extends JCEFHtmlPanel implements RstPrevi
                 browser.executeJavaScript("window.__IntelliJTools.openInBrowserCallback = function(link) {"
                         + myJSQueryOpenInBrowser.inject("link") + "}",
                         getCefBrowser().getURL(), 0);
+                browser.executeJavaScript(
+                        "window.__IntelliJTools._scrollSyncEnabled = true;\n" +
+                        "window.__IntelliJTools._externalScroll = false;\n" +
+                        "window.addEventListener('scroll', function() {\n" +
+                        "  if (window.__IntelliJTools._externalScroll) return;\n" +
+                        "  if (!window.__IntelliJTools._scrollSyncEnabled) return;\n" +
+                        "  var scrollable = document.body.scrollHeight - window.innerHeight;\n" +
+                        "  var ratio = scrollable > 0 ? (window.scrollY / scrollable) : 0;\n" +
+                        "  if (window.__IntelliJTools.scrollSyncCallback) {\n" +
+                        "    window.__IntelliJTools.scrollSyncCallback('' + ratio);\n" +
+                        "  }\n" +
+                        "});\n",
+                        getCefBrowser().getURL(), 0);
+                browser.executeJavaScript("window.__IntelliJTools.scrollSyncCallback = function(ratio) {"
+                        + myJSQueryScrollSync.inject("ratio") + "}",
+                        getCefBrowser().getURL(), 0);
             }
         }, getCefBrowser());
 
@@ -79,7 +98,19 @@ public final class RstJcefPreviewPanel extends JCEFHtmlPanel implements RstPrevi
             return null;
         });
 
+        myJSQueryScrollSync.addHandler(ratioStr -> {
+            ScrollListener listener = myScrollListener;
+            if (listener != null && !myExternalScrolling) {
+                try {
+                    double ratio = Double.parseDouble(ratioStr);
+                    listener.onScroll(Math.max(0.0, Math.min(1.0, ratio)));
+                } catch (NumberFormatException ignored) {}
+            }
+            return null;
+        });
+
         Disposer.register(this, myJSQueryOpenInBrowser);
+        Disposer.register(this, myJSQueryScrollSync);
 
         ApplicationManager.getApplication().getMessageBus().connect(this)
                 .subscribe(LafManagerListener.TOPIC, source -> this.render());
@@ -108,6 +139,22 @@ public final class RstJcefPreviewPanel extends JCEFHtmlPanel implements RstPrevi
     @Override
     public void print() {
         getCefBrowser().executeJavaScript("window.print()", getCefBrowser().getURL(), 0);
+    }
+
+    @Override
+    public void scrollToRatio(double ratio) {
+        myExternalScrolling = true;
+        getCefBrowser().executeJavaScript(
+                "window.__IntelliJTools._externalScroll = true;\n" +
+                "window.scrollTo(0, (document.body.scrollHeight - window.innerHeight) * " + ratio + ");\n" +
+                "setTimeout(function() { window.__IntelliJTools._externalScroll = false; }, 50);\n",
+                getCefBrowser().getURL(), 0);
+        myExternalScrolling = false;
+    }
+
+    @Override
+    public void setScrollListener(@Nullable ScrollListener listener) {
+        myScrollListener = listener;
     }
 
     @Override
@@ -187,7 +234,7 @@ public final class RstJcefPreviewPanel extends JCEFHtmlPanel implements RstPrevi
                    "th { background-color: #f6f8fa; }\n" +
                    "img { max-width: 100%; height: auto; }\n";
         }
-        return themeCss + getAdmonitionCss(isDarcula) + PRINT_CSS;
+        return themeCss + getAdmonitionCss(isDarcula) + getSyntaxHighlightingCss(isDarcula) + PRINT_CSS;
     }
 
     private static @NotNull String getAdmonitionCss(boolean isDarcula) {
@@ -215,6 +262,66 @@ public final class RstJcefPreviewPanel extends JCEFHtmlPanel implements RstPrevi
                    "div.warning, div.caution, div.attention { border-left-color: #e36209; background-color: #fff8f0; }\n" +
                    "div.danger, div.error { border-left-color: #d73a49; background-color: #ffeef0; }\n" +
                    "div.important { border-left-color: #6f42c1; background-color: #f5f0ff; }\n";
+        }
+    }
+
+    private static @NotNull String getSyntaxHighlightingCss(boolean isDarcula) {
+        if (isDarcula) {
+            return "pre.code .comment, pre.code .comment.single, pre.code .comment.hashbang " +
+                   "{ color: #808080; font-style: italic; }\n" +
+                   "pre.code .keyword { color: #cc7832; font-weight: bold; }\n" +
+                   "pre.code .keyword.constant { color: #cc7832; }\n" +
+                   "pre.code .keyword.declaration { color: #cc7832; }\n" +
+                   "pre.code .keyword.namespace { color: #cc7832; }\n" +
+                   "pre.code .keyword.reserved { color: #cc7832; }\n" +
+                   "pre.code .name.builtin, pre.code .name.builtin.pseudo { color: #8888c6; }\n" +
+                   "pre.code .name.class { color: #a9b7c6; font-weight: bold; }\n" +
+                   "pre.code .name.function { color: #ffc66d; }\n" +
+                   "pre.code .name.decorator { color: #bbb529; }\n" +
+                   "pre.code .name.exception { color: #cf6171; }\n" +
+                   "pre.code .name.namespace { color: #a9b7c6; }\n" +
+                   "pre.code .name.tag { color: #e8bf6a; }\n" +
+                   "pre.code .name.attribute { color: #bababa; }\n" +
+                   "pre.code .name.entity { color: #6897bb; }\n" +
+                   "pre.code .name.variable { color: #a9b7c6; }\n" +
+                   "pre.code .literal.string, pre.code .literal.string.double, pre.code .literal.string.single, " +
+                   "pre.code .literal.string.doc, pre.code .literal.string.backtick { color: #6a8759; }\n" +
+                   "pre.code .literal.string.affix { color: #cc7832; }\n" +
+                   "pre.code .literal.string.interpol { color: #cc7832; }\n" +
+                   "pre.code .literal.number, pre.code .literal.number.integer, pre.code .literal.number.float " +
+                   "{ color: #6897bb; }\n" +
+                   "pre.code .literal.scalar.plain { color: #a9b7c6; }\n" +
+                   "pre.code .operator { color: #a9b7c6; }\n" +
+                   "pre.code .operator.word { color: #cc7832; font-weight: bold; }\n" +
+                   "pre.code .punctuation, pre.code .punctuation.indicator { color: #a9b7c6; }\n";
+        } else {
+            return "pre.code .comment, pre.code .comment.single, pre.code .comment.hashbang " +
+                   "{ color: #408080; font-style: italic; }\n" +
+                   "pre.code .keyword { color: #008000; font-weight: bold; }\n" +
+                   "pre.code .keyword.constant { color: #008000; }\n" +
+                   "pre.code .keyword.declaration { color: #008000; }\n" +
+                   "pre.code .keyword.namespace { color: #008000; }\n" +
+                   "pre.code .keyword.reserved { color: #008000; }\n" +
+                   "pre.code .name.builtin, pre.code .name.builtin.pseudo { color: #008000; }\n" +
+                   "pre.code .name.class { color: #0000ff; font-weight: bold; }\n" +
+                   "pre.code .name.function { color: #0000ff; }\n" +
+                   "pre.code .name.decorator { color: #aa22ff; }\n" +
+                   "pre.code .name.exception { color: #d2413a; font-weight: bold; }\n" +
+                   "pre.code .name.namespace { color: #0000ff; }\n" +
+                   "pre.code .name.tag { color: #008000; font-weight: bold; }\n" +
+                   "pre.code .name.attribute { color: #687822; }\n" +
+                   "pre.code .name.entity { color: #aa22ff; }\n" +
+                   "pre.code .name.variable { color: #19177c; }\n" +
+                   "pre.code .literal.string, pre.code .literal.string.double, pre.code .literal.string.single, " +
+                   "pre.code .literal.string.doc, pre.code .literal.string.backtick { color: #ba2121; }\n" +
+                   "pre.code .literal.string.affix { color: #008000; }\n" +
+                   "pre.code .literal.string.interpol { color: #bb6688; font-weight: bold; }\n" +
+                   "pre.code .literal.number, pre.code .literal.number.integer, pre.code .literal.number.float " +
+                   "{ color: #666666; }\n" +
+                   "pre.code .literal.scalar.plain { color: #24292e; }\n" +
+                   "pre.code .operator { color: #666666; }\n" +
+                   "pre.code .operator.word { color: #aa22ff; font-weight: bold; }\n" +
+                   "pre.code .punctuation, pre.code .punctuation.indicator { color: #24292e; }\n";
         }
     }
 

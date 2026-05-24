@@ -31,7 +31,7 @@ public class RstPreviewEditorProvider implements FileEditorProvider, DumbAware {
     @Override
     public @NotNull FileEditor createEditor(@NotNull Project project, @NotNull VirtualFile file) {
         TextEditor textEditor = (TextEditor) TextEditorProvider.getInstance().createEditor(project, file);
-        RstPreviewFileEditor previewEditor = new RstPreviewFileEditor(file, project);
+        RstPreviewFileEditor previewEditor = new RstPreviewFileEditor(file, project, textEditor);
         return new TextEditorWithPreview(textEditor, previewEditor, "RST Editor with Preview",
                 TextEditorWithPreview.Layout.SHOW_EDITOR_AND_PREVIEW);
     }

@@ -62,6 +62,9 @@ Features
 
 - **Live Preview**: See rendered HTML as you type
 - **Split-Pane Editor**: Source on left, preview on right
+- **Synchronized Scrolling**: Bidirectional scroll sync between editor and preview
+- **Syntax Highlighting**: Colorized code blocks using Pygments tokenization
+- **Math Rendering**: Native MathML support for ``:math:`` and ``.. math::`` directives
 - **JCEF Rendering**: High-quality HTML5/CSS rendering using embedded Chromium
 - **Theme Support**: Automatic dark/light theme switching
 - **Print Preview**: Print the rendered HTML directly from the IDE

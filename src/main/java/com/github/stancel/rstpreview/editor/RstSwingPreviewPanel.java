@@ -36,6 +36,16 @@ public final class RstSwingPreviewPanel implements RstPreviewPanel {
         styleSheet.addRule("div.danger, div.error { border-left-color: #d73a49; background-color: #ffeef0; }");
         styleSheet.addRule("div.tip, div.hint { border-left-color: #28a745; background-color: #f0fff4; }");
         styleSheet.addRule("div.important { border-left-color: #6f42c1; background-color: #f5f0ff; }");
+        styleSheet.addRule("pre.code .comment { color: #408080; font-style: italic; }");
+        styleSheet.addRule("pre.code .keyword { color: #008000; font-weight: bold; }");
+        styleSheet.addRule("pre.code .name.builtin { color: #008000; }");
+        styleSheet.addRule("pre.code .name.class { color: #0000ff; font-weight: bold; }");
+        styleSheet.addRule("pre.code .name.function { color: #0000ff; }");
+        styleSheet.addRule("pre.code .name.decorator { color: #aa22ff; }");
+        styleSheet.addRule("pre.code .name.tag { color: #008000; font-weight: bold; }");
+        styleSheet.addRule("pre.code .literal.string { color: #ba2121; }");
+        styleSheet.addRule("pre.code .literal.number { color: #666666; }");
+        styleSheet.addRule("pre.code .operator { color: #666666; }");
         myEditorPane.setEditorKit(kit);
 
         myScrollPane = new JBScrollPane(myEditorPane);
@@ -64,6 +74,15 @@ public final class RstSwingPreviewPanel implements RstPreviewPanel {
             myEditorPane.print();
         } catch (PrinterException e) {
             LOG.warn("Failed to print RST preview", e);
+        }
+    }
+
+    @Override
+    public void scrollToRatio(double ratio) {
+        JScrollBar vBar = myScrollPane.getVerticalScrollBar();
+        int extent = vBar.getMaximum() - vBar.getVisibleAmount();
+        if (extent > 0) {
+            vBar.setValue((int) (ratio * extent));
         }
     }
 

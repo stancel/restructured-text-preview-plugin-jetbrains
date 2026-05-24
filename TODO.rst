@@ -30,20 +30,29 @@ Medium Priority
 Sphinx Directive Support
 ======================================================================
 
-- [ ] Handle ``.. code-block::`` with syntax highlighting
-- [ ] Support ``.. note::``, ``.. warning::``, ``.. tip::`` admonitions
+- [x] Handle ``.. code-block::`` with syntax highlighting (v1.2.0)
+- [x] Support ``.. note::``, ``.. warning::``, ``.. tip::`` admonitions (v1.1.0)
 - [ ] Process ``.. toctree::`` directives
 - [ ] Handle ``:ref:`` cross-references
-- [ ] Support ``.. image::`` and ``.. figure::`` directives
+- [x] Support ``.. image::`` and ``.. figure::`` directives (v1.0.0)
+
+.. _todo-math-rendering:
+
+Math Rendering
+======================================================================
+
+- [x] Render inline ``:math:`` directives (v1.2.0)
+- [x] Render display ``.. math::`` blocks (v1.2.0)
+- [ ] KaTeX fallback for older Chromium versions (if needed)
 
 .. _todo-scroll-sync:
 
 Synchronized Scrolling
 ======================================================================
 
-- [ ] Track cursor position in editor
-- [ ] Map editor lines to preview positions
-- [ ] Sync scroll when editor scrolls
+- [x] Sync scroll when editor scrolls (v1.2.0)
+- [x] Sync scroll when preview scrolls (v1.2.0)
+- [ ] Structural line-based mapping for improved accuracy
 - [ ] Highlight current section in preview
 
 .. _todo-performance:
@@ -96,6 +105,15 @@ Editor Enhancements
 **********************************************************************
 Completed
 **********************************************************************
+
+.. _todo-completed-1.2.0:
+
+Version 1.2.0
+======================================================================
+
+- [x] Syntax highlighting in code blocks (Pygments CSS themes)
+- [x] Math rendering via native MathML (``--math-output=mathml``)
+- [x] Synchronized scrolling (bidirectional, proportional ratio)
 
 .. _todo-completed-1.1.0:
 

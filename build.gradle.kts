@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.github.stancel"
-version = "1.1.0"
+version = "1.2.0"
 
 repositories {
     mavenCentral()
@@ -41,6 +41,11 @@ intellijPlatform {
             <b>Features:</b>
             <ul>
               <li>Live HTML preview inside the IDE (split-pane view)</li>
+              <li>Synchronized scrolling between editor and preview</li>
+              <li>Syntax highlighting in code blocks</li>
+              <li>Math rendering for :math: and .. math:: directives (MathML)</li>
+              <li>Print preview with optimized print layout</li>
+              <li>Admonition styling (note, warning, tip, etc.)</li>
               <li>Uses your system's rst2html command from docutils</li>
               <li>Works without the Python plugin</li>
               <li>Supports both light and dark themes</li>

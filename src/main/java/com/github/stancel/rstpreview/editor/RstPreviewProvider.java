@@ -56,6 +56,7 @@ public final class RstPreviewProvider {
             commandLine.addParameter("--no-generator");
             commandLine.addParameter("--no-source-link");
             commandLine.addParameter("--no-datestamp");
+            commandLine.addParameter("--math-output=mathml");
 
             VirtualFile parent = virtualFile.getParent();
             if (parent != null) {

@@ -26,7 +26,41 @@ Planned
 ======================================================================
 
 - Support for Sphinx-specific directives
-- Synchronized scrolling between editor and preview
+- Custom CSS injection via settings
+
+.. _changelog-1.2.0:
+
+**********************************************************************
+[1.2.0] - 2026-05-24
+**********************************************************************
+
+.. _changelog-1.2.0-added:
+
+Added
+======================================================================
+
+- **Syntax highlighting** in code blocks — docutils Pygments tokenization
+  is now colorized with themed CSS (Darcula-inspired dark, default-inspired
+  light). Covers keywords, strings, comments, functions, decorators, numbers,
+  operators, and more across all languages Pygments supports.
+- **Math rendering** via native MathML — inline ``:math:`` and display
+  ``.. math::`` directives now render as formatted equations using Chromium's
+  built-in MathML support. Zero external JS dependencies.
+- **Synchronized scrolling** between the RST source editor and the HTML
+  preview. Bidirectional: scrolling either pane moves the other to the
+  corresponding position.
+
+.. _changelog-1.2.0-technical:
+
+Technical Details
+----------------------------------------------------------------------
+
+- Math uses ``--math-output=mathml`` flag with rst2html, producing native
+  ``<math>`` elements rendered by JCEF's Chromium (109+)
+- Syntax highlighting uses Pygments CSS themes scoped to ``pre.code`` spans
+  that docutils already emits — no JS highlighting library needed
+- Scroll sync uses proportional ratio mapping with feedback-loop guards
+  to prevent scroll bouncing between editor and preview
 
 .. _changelog-1.1.0:
 

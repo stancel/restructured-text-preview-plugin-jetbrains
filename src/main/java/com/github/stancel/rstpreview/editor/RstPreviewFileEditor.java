@@ -3,11 +3,16 @@ package com.github.stancel.rstpreview.editor;
 
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.LogicalPosition;
+import com.intellij.openapi.editor.ScrollType;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
+import com.intellij.openapi.editor.event.VisibleAreaListener;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorState;
+import com.intellij.openapi.fileEditor.TextEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.util.Pair;
@@ -30,6 +35,7 @@ public class RstPreviewFileEditor extends UserDataHolderBase implements FileEdit
     private final @NotNull VirtualFile myFile;
     private final @NotNull Project myProject;
     private final @Nullable Document myDocument;
+    private final @Nullable TextEditor myTextEditor;
     private final @NotNull Alarm myPooledAlarm = new Alarm(Alarm.ThreadToUse.POOLED_THREAD, this);
     private final @NotNull Alarm mySwingAlarm = new Alarm(Alarm.ThreadToUse.SWING_THREAD, this);
 
@@ -38,10 +44,13 @@ public class RstPreviewFileEditor extends UserDataHolderBase implements FileEdit
     private @NotNull String myLastRenderedHtml = "";
     private int myLastInputTextHash = 0;
     private volatile boolean myDisposed = false;
+    private volatile boolean myEditorScrolling = false;
+    private volatile boolean myPreviewScrolling = false;
 
-    public RstPreviewFileEditor(@NotNull VirtualFile file, @NotNull Project project) {
+    public RstPreviewFileEditor(@NotNull VirtualFile file, @NotNull Project project, @Nullable TextEditor textEditor) {
         myFile = file;
         myProject = project;
+        myTextEditor = textEditor;
         myDocument = FileDocumentManager.getInstance().getDocument(myFile);
 
         boolean useJcef = JBCefApp.isSupported() &&
@@ -60,6 +69,36 @@ public class RstPreviewFileEditor extends UserDataHolderBase implements FileEdit
                     myPooledAlarm.addRequest(() -> updateHtml(), PARSING_CALL_TIMEOUT_MS);
                 }
             }, this);
+        }
+
+        if (myTextEditor != null) {
+            Editor editor = myTextEditor.getEditor();
+            editor.getScrollingModel().addVisibleAreaListener(e -> {
+                if (myPreviewScrolling) return;
+                myEditorScrolling = true;
+                try {
+                    double ratio = getEditorScrollRatio(editor);
+                    myPanel.scrollToRatio(ratio);
+                } finally {
+                    myEditorScrolling = false;
+                }
+            }, this);
+
+            myPanel.setScrollListener(ratio -> {
+                if (myEditorScrolling) return;
+                myPreviewScrolling = true;
+                try {
+                    int totalLines = editor.getDocument().getLineCount();
+                    int targetLine = (int) (ratio * totalLines);
+                    targetLine = Math.max(0, Math.min(targetLine, totalLines - 1));
+                    int finalTargetLine = targetLine;
+                    SwingUtilities.invokeLater(() ->
+                            editor.getScrollingModel().scrollTo(
+                                    new LogicalPosition(finalTargetLine, 0), ScrollType.MAKE_VISIBLE));
+                } finally {
+                    myPreviewScrolling = false;
+                }
+            });
         }
     }
 
@@ -143,6 +182,16 @@ public class RstPreviewFileEditor extends UserDataHolderBase implements FileEdit
 
     public @NotNull RstPreviewPanel getPanel() {
         return myPanel;
+    }
+
+    private static double getEditorScrollRatio(@NotNull Editor editor) {
+        java.awt.Rectangle visibleArea = editor.getScrollingModel().getVisibleArea();
+        JComponent component = editor.getContentComponent();
+        int contentHeight = component.getHeight();
+        int visibleHeight = visibleArea.height;
+        int scrollableHeight = contentHeight - visibleHeight;
+        if (scrollableHeight <= 0) return 0.0;
+        return Math.max(0.0, Math.min(1.0, (double) visibleArea.y / scrollableHeight));
     }
 
     @Override
