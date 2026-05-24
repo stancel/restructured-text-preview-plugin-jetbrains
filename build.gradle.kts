@@ -2,11 +2,11 @@ import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 
 plugins {
     id("java")
-    id("org.jetbrains.intellij.platform") version "2.10.5"
+    id("org.jetbrains.intellij.platform") version "2.16.0"
 }
 
 group = "com.github.stancel"
-version = "1.0.3"
+version = "1.1.0"
 
 repositories {
     mavenCentral()
@@ -59,7 +59,7 @@ intellijPlatform {
         }
         ideaVersion {
             sinceBuild = "243"
-            untilBuild = "253.*"
+            untilBuild = "261.*"
         }
     }
 
@@ -71,8 +71,8 @@ intellijPlatform {
     // Plugin verification configuration
     pluginVerification {
         ides {
-            // Verify against current and previous major versions
-            ide(IntelliJPlatformType.IntellijIdeaCommunity, "2024.3")
+            create(IntelliJPlatformType.IntellijIdeaCommunity, "2024.3")
+            create(IntelliJPlatformType.IntellijIdea, "2026.1")
         }
     }
 }

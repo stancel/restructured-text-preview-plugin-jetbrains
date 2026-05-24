@@ -22,7 +22,7 @@ import javax.swing.*;
 import java.beans.PropertyChangeListener;
 
 public class RstPreviewFileEditor extends UserDataHolderBase implements FileEditor {
-    private static final long PARSING_CALL_TIMEOUT_MS = 50L;
+    private static final long PARSING_CALL_TIMEOUT_MS = 300L;
     private static final String NO_PREVIEW = "<h2>No preview available.</h2><br/><br/>";
     private static final long RENDERING_DELAY_MS = 20L;
 
@@ -36,6 +36,7 @@ public class RstPreviewFileEditor extends UserDataHolderBase implements FileEdit
     private final Object REQUESTS_LOCK = new Object();
     private @Nullable Runnable myLastRequest = null;
     private @NotNull String myLastRenderedHtml = "";
+    private int myLastInputTextHash = 0;
     private volatile boolean myDisposed = false;
 
     public RstPreviewFileEditor(@NotNull VirtualFile file, @NotNull Project project) {
@@ -102,7 +103,14 @@ public class RstPreviewFileEditor extends UserDataHolderBase implements FileEdit
             return;
         }
 
-        final Pair<String, String> htmlAndError = RstPreviewProvider.toHtml(myDocument.getText(), myFile);
+        String text = myDocument.getText();
+        int textHash = text.hashCode();
+        if (textHash == myLastInputTextHash && !myLastRenderedHtml.isEmpty()) {
+            return;
+        }
+        myLastInputTextHash = textHash;
+
+        final Pair<String, String> htmlAndError = RstPreviewProvider.toHtml(text, myFile);
         if (htmlAndError == null) return;
 
         String html = htmlAndError.getFirst();
@@ -131,6 +139,10 @@ public class RstPreviewFileEditor extends UserDataHolderBase implements FileEdit
             };
             mySwingAlarm.addRequest(myLastRequest, RENDERING_DELAY_MS, ModalityState.stateForComponent(getComponent()));
         }
+    }
+
+    public @NotNull RstPreviewPanel getPanel() {
+        return myPanel;
     }
 
     @Override

@@ -50,6 +50,8 @@ Features
 - **Split-Pane Editor**: Source on left, preview on right
 - **JCEF Rendering**: High-quality HTML5/CSS rendering using embedded Chromium
 - **Theme Support**: Automatic dark/light theme switching
+- **Print Preview**: Print the rendered HTML directly from the IDE
+- **Admonition Styling**: Colored styling for RST note, warning, tip, and other directives
 - **Configurable**: Custom ``rst2html`` path in settings
 - **Auto-Detection**: Finds ``rst2html`` from pyenv, PATH, common locations
 - **Fallback Renderer**: Swing-based rendering if JCEF unavailable
@@ -66,7 +68,7 @@ IDE Requirements
 ======================================================================
 
 - Any JetBrains IDE (2024.3+)
-- Build range: 243 - 253.*
+- Build range: 243 - 261.*
 
 .. _rst-preview-req-system:
 

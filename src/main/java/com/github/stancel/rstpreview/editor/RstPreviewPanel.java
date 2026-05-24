@@ -10,4 +10,5 @@ public interface RstPreviewPanel extends Disposable {
     void setHtml(@NotNull String html);
     void render();
     @NotNull JComponent getComponent();
+    default void print() {}
 }

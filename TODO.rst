@@ -51,8 +51,8 @@ Synchronized Scrolling
 Performance Improvements
 ======================================================================
 
-- [ ] Debounce preview updates (currently 50ms)
-- [ ] Cache rendered HTML for unchanged content
+- [x] Debounce preview updates (increased from 50ms to 300ms in v1.1.0)
+- [x] Cache rendered HTML for unchanged content (content hash check in v1.1.0)
 - [ ] Incremental DOM updates instead of full refresh
 - [ ] Background processing for large files
 
@@ -68,7 +68,8 @@ Export Options
 ======================================================================
 
 - [ ] Export to HTML file
-- [ ] Export to PDF (via browser print)
+- [x] Print rendered preview (via browser print dialog, added in v1.1.0)
+- [ ] Export to PDF
 - [ ] Copy rendered HTML to clipboard
 
 .. _todo-settings:
@@ -95,6 +96,19 @@ Editor Enhancements
 **********************************************************************
 Completed
 **********************************************************************
+
+.. _todo-completed-1.1.0:
+
+Version 1.1.0
+======================================================================
+
+- [x] Print preview feature (JCEF native print, Swing print API)
+- [x] Admonition CSS styling for light and dark themes
+- [x] Print media CSS for clean paper output
+- [x] Increased debounce from 50ms to 300ms
+- [x] Content hash caching to skip redundant rst2html calls
+- [x] Extended IDE compatibility to 2026.1 (build 261.*)
+- [x] Updated Gradle to 9.5.1 and IntelliJ Platform Gradle Plugin to 2.16.0
 
 .. _todo-completed-1.0.3:
 

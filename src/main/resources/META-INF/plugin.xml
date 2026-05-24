@@ -25,6 +25,15 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.plugins.rest</depends>
 
+    <actions>
+        <action id="RstPreview.Print"
+                class="com.github.stancel.rstpreview.editor.RstPrintPreviewAction"
+                text="Print RST Preview"
+                description="Print the rendered ReStructuredText preview">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+    </actions>
+
     <extensions defaultExtensionNs="com.intellij">
         <fileEditorProvider implementation="com.github.stancel.rstpreview.editor.RstPreviewEditorProvider"
                             order="first"/>

@@ -28,6 +28,47 @@ Planned
 - Support for Sphinx-specific directives
 - Synchronized scrolling between editor and preview
 
+.. _changelog-1.1.0:
+
+**********************************************************************
+[1.1.0] - 2026-05-24
+**********************************************************************
+
+.. _changelog-1.1.0-added:
+
+Added
+======================================================================
+
+- **Print preview** feature for rendered RST output (JCEF uses native
+  Chromium print dialog, Swing uses Java print API)
+- **Admonition styling** for RST directives (``note``, ``warning``,
+  ``tip``, ``important``, ``caution``, ``danger``, ``error``, ``hint``,
+  ``attention``) with themed colors for both light and dark modes
+- **Print CSS** with optimized layout for paper output (white background,
+  black text, no max-width constraint, code block wrapping)
+- Print action available in the editor right-click context menu
+
+.. _changelog-1.1.0-changed:
+
+Changed
+======================================================================
+
+- Extended IDE compatibility from 2025.3 to **2026.1** (build 261.*)
+- Updated Gradle wrapper from 8.13 to **9.5.1**
+- Updated IntelliJ Platform Gradle Plugin from 2.10.5 to **2.16.0**
+- Added plugin verification against IntelliJ IDEA 2026.1 (unified
+  distribution)
+- Increased preview debounce from 50ms to **300ms** to reduce unnecessary
+  rst2html process spawns during fast typing
+
+.. _changelog-1.1.0-fixed:
+
+Fixed
+======================================================================
+
+- Added content hash check to skip redundant rst2html calls when
+  document text has not changed (cursor movement, selection changes)
+
 .. _changelog-1.0.3:
 
 **********************************************************************
