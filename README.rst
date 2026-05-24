@@ -4,6 +4,20 @@
 ReStructuredText Preview Plugin for JetBrains IDEs
 ######################################################################
 
+|marketplace| |downloads| |license|
+
+.. |marketplace| image:: https://img.shields.io/jetbrains/plugin/v/29835-restructuredtext-preview-standalone-.svg?label=Marketplace
+   :target: https://plugins.jetbrains.com/plugin/29835-restructuredtext-preview-standalone-
+   :alt: JetBrains Marketplace
+
+.. |downloads| image:: https://img.shields.io/jetbrains/plugin/d/29835-restructuredtext-preview-standalone-.svg?label=Downloads
+   :target: https://plugins.jetbrains.com/plugin/29835-restructuredtext-preview-standalone-
+   :alt: Downloads
+
+.. |license| image:: https://img.shields.io/github/license/stancel/restructured-text-preview-plugin-jetbrains.svg
+   :target: https://github.com/stancel/restructured-text-preview-plugin-jetbrains/blob/master/LICENSE
+   :alt: License
+
 .. contents:: Table of Contents
    :local:
    :depth: 2
@@ -260,7 +274,8 @@ Acknowledgments
 Links
 **********************************************************************
 
+- `Project Website <https://stancel.github.io/restructured-text-preview-plugin-jetbrains/>`_
 - `GitHub Repository <https://github.com/stancel/restructured-text-preview-plugin-jetbrains>`_
-- `JetBrains Marketplace <https://plugins.jetbrains.com/>`_
+- `JetBrains Marketplace <https://plugins.jetbrains.com/plugin/29835-restructuredtext-preview-standalone->`_
 - `docutils Documentation <https://docutils.sourceforge.io/>`_
 - `Issue Tracker <https://github.com/stancel/restructured-text-preview-plugin-jetbrains/issues>`_
